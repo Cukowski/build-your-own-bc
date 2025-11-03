@@ -1,6 +1,7 @@
 #include "my_bc.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 int vec_init(t_vec *v, size_t elem_size) {
     v->data = NULL;
@@ -18,3 +19,26 @@ void vec_free(t_vec *v) {
     v->elem = 0;
 }
 
+static int vec_grow(t_vec *v) {
+    size_t ncap;
+    if (v->cap) ncap = v->cap * 2;
+    else ncap = 8;
+
+    void *p = malloc(ncap * v->elem);
+    if (!p) return -1;
+    if (v->data) {
+        (void)memcpy(p, v->data, v->size * v->elem);
+        free(v->data);
+    }
+    v->data = p;
+    v->cap  = ncap;
+    return 0;
+}
+
+int vec_push(t_vec *v, const void *elem) {
+    if (v->size == v->cap && vec_grow(v) != 0) return -1;
+
+    (void)memcpy((char*)v->data + v->size * v->elem, elem, v->elem);
+    v->size++;
+    return 0;
+}
