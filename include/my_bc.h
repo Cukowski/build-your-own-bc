@@ -24,7 +24,9 @@ typedef struct s_vec {
 int  vec_init(t_vec *v, size_t elem_size);
 void vec_free(t_vec *v);
 int  vec_push(t_vec *v, const void *elem);
-
+void *vec_back(t_vec *v);
+int   vec_pop(t_vec *v);
+void *vec_at(t_vec *v, size_t i);
 
 // tokens
 typedef enum e_toktype {
@@ -50,6 +52,10 @@ typedef struct s_token {
 
 // Return 0 on succ, non-zero: error (set parse error)
 int lex(const char *s, t_vec *out_tokens);
+
+// Shunting-yard: infix -> rpn
+// Return 0 on success, non-zero: error (set parse error)
+int to_rpn(const t_vec *tokens, t_vec *out_rpn);
 
 
 #endif /* MY_BC_H */

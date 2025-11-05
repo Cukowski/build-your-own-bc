@@ -18,10 +18,13 @@ int main(int argc, char **argv) {
     lex(argv[1], &tokens);
 
     // shunting yard -> rpn 
+    to_rpn(&tokens, &rpn);
 
     // evaluate rpn
 
     // success
 
+    vec_free(&tokens);
+    vec_free(&rpn);
     return 0;
 }
